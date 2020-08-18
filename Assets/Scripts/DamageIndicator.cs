@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using DG.Tweening;
 
 namespace MizJam
 {
@@ -14,6 +15,8 @@ namespace MizJam
         {
             indicatorImage = GetComponentInChildren<Image>();
             Destroy(this.gameObject, 2f);
+            Color transparentImageColor = new Color(indicatorImage.color.r, indicatorImage.color.g, indicatorImage.color.b, 0);
+            indicatorImage.DOColor(transparentImageColor, 3f);
         }
 
         void Update()
