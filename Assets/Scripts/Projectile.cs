@@ -10,13 +10,26 @@ namespace MizJam
         [SerializeField]
         private float damage = 50f;
 
+        private Enemy source;
+
+        private void Start()
+        {
+            Destroy(this.gameObject, 4f);
+        }
+
         private void OnTriggerEnter(Collider other)
         {
             if (other.gameObject.tag == "Player")
             {
                 other.GetComponent<Player>().TakeDamage(damage);
+                HUDManager.instance.DisplayHitDirection(source);
                 Destroy(this.gameObject);
             }
+        }
+
+        public void SetSource(Enemy enemy)
+        {
+            this.source = enemy;
         }
     }
 }

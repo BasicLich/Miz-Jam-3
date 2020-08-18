@@ -28,7 +28,8 @@ namespace MizJam
             Vector3 dir = (Camera.main.transform.position - transform.position).normalized;
             GameObject projectile = Instantiate(projectilePrefab);
             projectile.transform.position = transform.position;
-            projectile.GetComponent<Rigidbody>().AddForceAtPosition(dir * 5000, Vector3.zero);
+            projectile.GetComponent<Projectile>().SetSource(this);
+            projectile.GetComponent<Rigidbody>().AddForceAtPosition(dir * 3000, Vector3.zero);
         }
     }
 }
