@@ -72,19 +72,21 @@ namespace MizJam
 
         private void Update()
         {
+            if (!this.isAttacking && Input.GetMouseButtonDown(0))
+                StartCoroutine(this.AttackCoroutine());
+
             this.arms.localRotation = this.bonePositioning.armsRotation;
             this.leftArm.localRotation = this.bonePositioning.leftArmRotation;
             this.rightArm.localRotation = this.bonePositioning.rightArmRotation;
             this.leftHand.localPosition = this.bonePositioning.leftHandPosition;
             this.rightHand.localPosition = this.bonePositioning.rightHandPosition;
-
-            if (!this.isAttacking && Input.GetMouseButtonDown(0))
-                StartCoroutine(this.AttackCoroutine());
         }
 
         private void LateUpdate()
         {
             this.transform.localRotation = this.camera.transform.localRotation;
+            this.leftHand.rotation = Quaternion.FromToRotation(this.leftHand.up, Vector3.up) * this.leftHand.rotation;
+            this.rightHand.rotation = Quaternion.FromToRotation(this.rightHand.up, Vector3.up) * this.rightHand.rotation;
         }
 
         private IEnumerator AttackCoroutine()
@@ -196,8 +198,8 @@ namespace MizJam
             return new BonePositioning
             {
                 armsRotation = Quaternion.Euler(-90.0f, 0.0f, 0.0f),
-                leftArmRotation = Quaternion.Euler(0.0f, armAngle, 0.0f),
-                rightArmRotation = Quaternion.Euler(0.0f, -armAngle, 0.0f),
+                leftArmRotation = Quaternion.Euler(0.0f, armAngle - 7.5f, 0.0f),
+                rightArmRotation = Quaternion.Euler(0.0f, -armAngle + 7.5f, 0.0f),
                 leftHandPosition = armSize * Vector3.forward,
                 rightHandPosition = armSize * Vector3.forward
             };
