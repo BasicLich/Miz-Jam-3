@@ -15,6 +15,7 @@ namespace MizJam
 
             public static BonePositioning Lerp(BonePositioning a, BonePositioning b, float t)
             {
+                t = Mathf.Clamp01(t);
                 return new BonePositioning
                 {
                     armsRotation = Quaternion.Lerp(a.armsRotation, b.armsRotation, t),
@@ -53,6 +54,9 @@ namespace MizJam
         [SerializeField]
         private new Camera camera;
 
+        [SerializeField]
+        private GameObject smashMarkPrefab;
+
 
 
         private bool isAttacking = false;
@@ -78,6 +82,11 @@ namespace MizJam
                 StartCoroutine(this.AttackCoroutine());
         }
 
+        private void LateUpdate()
+        {
+            this.transform.localRotation = this.camera.transform.localRotation;
+        }
+
         private IEnumerator AttackCoroutine()
         {
             this.isAttacking = true;
@@ -87,9 +96,9 @@ namespace MizJam
 
             while (t <= 1.0f)
             {
-                this.bonePositioning = BonePositioning.Lerp(this.GetRestBonePositioning(), this.GetPrepareBonePositioning(), t);
                 this.counter += Time.deltaTime;
                 t = this.counter / this.timeToPrepare;
+                this.bonePositioning = BonePositioning.Lerp(this.GetRestBonePositioning(), this.GetPrepareBonePositioning(), t);
                 yield return null;
             }
 
@@ -99,12 +108,13 @@ namespace MizJam
 
             while (t <= 1.0f)
             {
-                this.bonePositioning = BonePositioning.Lerp(this.GetPrepareBonePositioning(), this.GetAttackBonePositioning(), t);
                 this.counter += Time.deltaTime;
                 t = this.counter / this.timeToAttack;
+                this.bonePositioning = BonePositioning.Lerp(this.GetPrepareBonePositioning(), this.GetAttackBonePositioning(), t);
                 yield return null;
             }
 
+            this.PlaceMark();
 
             t = 0.0f;
             this.counter = 0.0f;
@@ -122,9 +132,9 @@ namespace MizJam
             
             while (t <= 1.0f)
             {
-                this.bonePositioning = BonePositioning.Lerp(this.GetAttackBonePositioning(), this.GetRestBonePositioning(), t);
                 this.counter += Time.deltaTime;
                 t = this.counter / this.timeToRest;
+                this.bonePositioning = BonePositioning.Lerp(this.GetAttackBonePositioning(), this.GetRestBonePositioning(), t);
                 yield return null;
             }
 
@@ -144,6 +154,23 @@ namespace MizJam
 
             return attackPosition;
         }
+
+        private void PlaceMark()
+        {
+            Ray ray = new Ray(this.camera.transform.position, this.camera.transform.forward);
+
+            if (Physics.Raycast(ray, out RaycastHit hit, this.attackRange, this.layerMask))
+            {
+                if (hit.distance < this.attackRange)
+                {
+                    var mark = Instantiate(this.smashMarkPrefab);
+                    mark.transform.position = hit.point + 0.01f * hit.normal;
+                    mark.transform.up = hit.normal;
+                    mark.transform.Rotate(0.0f, Random.Range(0, 90.0f), 0.0f, Space.Self);
+                }
+            }
+        }
+
 
         private BonePositioning GetRestBonePositioning()
         {
@@ -189,11 +216,19 @@ namespace MizJam
             return new BonePositioning
             {
                 armsRotation = Quaternion.Euler(xRotation, 0.0f, 0.0f),
-                leftArmRotation = Quaternion.Euler(0.0f, armAngle, 0.0f),
-                rightArmRotation = Quaternion.Euler(0.0f, -armAngle, 0.0f),
+                leftArmRotation = Quaternion.Euler(0.0f, armAngle - 7.5f, 0.0f),
+                rightArmRotation = Quaternion.Euler(0.0f, -armAngle + 7.5f, 0.0f),
                 leftHandPosition = armSize * Vector3.forward,
                 rightHandPosition = armSize * Vector3.forward
             };
         }
+
+#if UNITY_EDITOR
+        private void OnDrawGizmosSelected()
+        {
+            Gizmos.color = Color.yellow;
+            Gizmos.DrawWireSphere(this.camera.transform.position, this.attackRange);
+        }
+#endif
     }
 }
