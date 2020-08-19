@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -29,6 +30,11 @@ namespace MizJam
             GameObject projectile = Instantiate(projectilePrefab);
             projectile.transform.position = transform.position;
             projectile.GetComponent<Rigidbody>().AddForceAtPosition(dir * 5000, Vector3.zero);
+        }
+
+        public void SufferImpact(Vector3 point)
+        {
+            Debug.Log("AIAI");
         }
     }
 }
