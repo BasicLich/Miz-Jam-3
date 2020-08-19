@@ -1,4 +1,6 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace MizJam
@@ -31,6 +33,9 @@ namespace MizJam
         private float attackRange = 12.0f;
 
         [SerializeField]
+        private float attackRadius = 6.0f;
+
+        [SerializeField]
         private float shoulderSize = 4.0f;
 
         [SerializeField]
@@ -49,6 +54,9 @@ namespace MizJam
         private float timeToRest = 0.25f;
 
         [SerializeField]
+        private LayerMask attackable, enemies;
+
+        [SerializeField]
         private Transform arms, leftArm, rightArm, leftHand, rightHand;
 
         [SerializeField]
@@ -57,17 +65,21 @@ namespace MizJam
         [SerializeField]
         private GameObject smashMarkPrefab;
 
+        [SerializeField]
+        private GameObject target;
 
 
         private bool isAttacking = false;
-        private int layerMask;
         private float counter = 0.0f;
         private BonePositioning bonePositioning;
+        private Color targetColor;
+        private Color targetOffColor;
 
         private void Awake()
         {
-            this.layerMask = ~LayerMask.NameToLayer("Player");
             this.bonePositioning = this.GetRestBonePositioning();
+            this.targetColor = this.target.GetComponentInChildren<MeshRenderer>().material.GetColor("_BaseColor");
+            this.targetOffColor = new Color(1.0f, 1.0f, 1.0f, 0.2f);
         }
 
         private void Update()
@@ -80,6 +92,21 @@ namespace MizJam
             this.rightArm.localRotation = this.bonePositioning.rightArmRotation;
             this.leftHand.localPosition = this.bonePositioning.leftHandPosition;
             this.rightHand.localPosition = this.bonePositioning.rightHandPosition;
+
+            Ray ray = new Ray(this.camera.transform.position, this.camera.transform.forward);
+            if (Physics.Raycast(ray, out RaycastHit hit, float.MaxValue, this.attackable))
+            {
+                var material = this.target.GetComponentInChildren<MeshRenderer>().material;
+                material.SetColor("_BaseColor", hit.distance <= this.attackRange ? this.targetColor : this.targetOffColor);
+
+                this.target.transform.position = hit.point + 0.01f * hit.normal;
+                this.target.transform.up = hit.normal;
+
+                this.target.SetActive(true);
+            } else
+            {
+                this.target.SetActive(false);
+            }
         }
 
         private void LateUpdate()
@@ -116,7 +143,7 @@ namespace MizJam
                 yield return null;
             }
 
-            this.PlaceMark();
+            this.Attack();
 
             t = 0.0f;
             this.counter = 0.0f;
@@ -148,7 +175,7 @@ namespace MizJam
             Ray ray = new Ray(this.camera.transform.position, this.camera.transform.forward);
             Vector3 attackPosition = ray.GetPoint(this.attackRange);
 
-            if (Physics.Raycast(ray, out RaycastHit hit, this.attackRange, this.layerMask))
+            if (Physics.Raycast(ray, out RaycastHit hit, this.attackRange, this.attackable))
             {
                 if (hit.distance < this.attackRange)
                     attackPosition = hit.point;
@@ -157,18 +184,22 @@ namespace MizJam
             return attackPosition;
         }
 
-        private void PlaceMark()
+        private void Attack()
         {
             Ray ray = new Ray(this.camera.transform.position, this.camera.transform.forward);
 
-            if (Physics.Raycast(ray, out RaycastHit hit, this.attackRange, this.layerMask))
+            if (Physics.Raycast(ray, out RaycastHit hit, this.attackRange, this.attackable))
             {
-                if (hit.distance < this.attackRange)
+                if (hit.distance <= this.attackRange)
                 {
                     var mark = Instantiate(this.smashMarkPrefab);
                     mark.transform.position = hit.point + 0.01f * hit.normal;
                     mark.transform.up = hit.normal;
                     mark.transform.Rotate(0.0f, Random.Range(0, 90.0f), 0.0f, Space.Self);
+
+                    IEnumerable<Enemy> inRange = Physics.OverlapSphere(hit.point, this.attackRadius, this.enemies).Select(el => el.GetComponent<Enemy>()).Where(el => el != null);
+                    foreach (Enemy enemy in inRange)
+                        enemy.SufferImpact(hit.point);
                 }
             }
         }

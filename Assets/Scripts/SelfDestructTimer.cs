@@ -7,10 +7,9 @@ namespace MizJam
     {
         public float timeToDestroy = 10.0f;
 
-        private IEnumerator Start()
+        private void Start()
         {
-            yield return new WaitForSeconds(this.timeToDestroy);
-            Destroy(this.gameObject);
+            Destroy(this.gameObject, this.timeToDestroy);
         }
     }
 }
