@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 namespace MizJam
 {
@@ -14,13 +15,25 @@ namespace MizJam
         private float shootInterval = 3f;
         private float countdown = 0f;
 
+        private bool isDead = false;
+
+        private Rigidbody rb;
+
+        private void Start()
+        {
+            rb = GetComponent<Rigidbody>();
+        }
+
         void Update()
         {
-            countdown += Time.fixedDeltaTime;
-            if (countdown >= shootInterval)
+            if (!isDead)
             {
-                ThrowProjectileAtPlayer();
-                countdown = 0;
+                countdown += Time.fixedDeltaTime;
+                if (countdown >= shootInterval)
+                {
+                    ThrowProjectileAtPlayer();
+                    countdown = 0;
+                }
             }
         }
 
@@ -35,7 +48,17 @@ namespace MizJam
 
         public void SufferImpact(Vector3 point)
         {
-            Debug.Log("AIAI");
+            //TODO: Death sound
+
+            isDead = true;
+            rb.useGravity = true;
+            rb.AddForce(Vector3.up * 500f);
+            rb.AddExplosionForce(400f, point, 20f);
+
+            //deformations to animate death
+            transform.DOScaleY(-0.8f, 0.3f).OnComplete(() => transform.DOShakeScale(2, new Vector3(0.5f, 0.5f, 0), 10, 50, true));
+
+            Destroy(this.gameObject, 4f);
         }
     }
 }
