@@ -58,9 +58,12 @@ namespace MizJam
             rb.AddExplosionForce(800f, point, 5f, 2f, ForceMode.Force);
 
             //deformations to animate death
-            transform.DOScaleY(-0.8f, 0.3f).OnComplete(() => transform.DOShakeScale(2, new Vector3(0.5f, 0.5f, 0), 10, 50, true));
-
-            Destroy(this.gameObject, 4f);
+            transform.DOScaleY(-0.8f, 0.3f).OnComplete(() => {
+                transform.DOShakeScale(2, new Vector3(0.5f, 0.5f, 0), 10, 50, true).OnComplete(() =>
+                {
+                    Destroy(this.gameObject);
+                });
+            });
         }
     }
 }
