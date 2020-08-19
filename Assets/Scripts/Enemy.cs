@@ -18,10 +18,12 @@ namespace MizJam
         private bool isDead = false;
 
         private Rigidbody rb;
+        private Animator animator;
 
         private void Start()
         {
             rb = GetComponent<Rigidbody>();
+            animator = GetComponent<Animator>();
         }
 
         void Update()
@@ -31,7 +33,8 @@ namespace MizJam
                 countdown += Time.fixedDeltaTime;
                 if (countdown >= shootInterval)
                 {
-                    ThrowProjectileAtPlayer();
+                    animator.SetTrigger("ShootAtPlayer");
+                    //ThrowProjectileAtPlayer();
                     countdown = 0;
                 }
             }
@@ -49,11 +52,10 @@ namespace MizJam
         public void SufferImpact(Vector3 point)
         {
             //TODO: Death sound
-
+            animator.enabled = false;
             isDead = true;
             rb.useGravity = true;
-            rb.AddForce(Vector3.up * 500f);
-            rb.AddExplosionForce(400f, point, 20f);
+            rb.AddExplosionForce(800f, point, 5f, 2f, ForceMode.Force);
 
             //deformations to animate death
             transform.DOScaleY(-0.8f, 0.3f).OnComplete(() => transform.DOShakeScale(2, new Vector3(0.5f, 0.5f, 0), 10, 50, true));
