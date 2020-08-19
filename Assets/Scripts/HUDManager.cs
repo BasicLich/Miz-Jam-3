@@ -1,21 +1,12 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using MizJam.Utility;
 using UnityEngine;
 
 namespace MizJam
 {
-    public class HUDManager : MonoBehaviour
+    public class HUDManager : Singleton<HUDManager>
     {
-        public static HUDManager instance;
-
         [SerializeField]
         private GameObject dmgIndicationCanvas, dmgIndicatorPrefab;
-
-        private void Awake()
-        {
-            if (instance == null)
-                instance = this;
-        }
 
         public void DisplayHitDirection(Enemy enemy)
         {

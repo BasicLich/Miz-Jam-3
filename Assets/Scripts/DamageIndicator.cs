@@ -14,9 +14,8 @@ namespace MizJam
         void Start()
         {
             indicatorImage = GetComponentInChildren<Image>();
-            Destroy(this.gameObject, 2f);
             Color transparentImageColor = new Color(indicatorImage.color.r, indicatorImage.color.g, indicatorImage.color.b, 0);
-            indicatorImage.DOColor(transparentImageColor, 3f);
+            indicatorImage.DOColor(transparentImageColor, 3f).OnComplete(() => Destroy(this.gameObject));
         }
 
         void Update()
