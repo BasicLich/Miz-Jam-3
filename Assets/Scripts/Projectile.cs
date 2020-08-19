@@ -22,7 +22,7 @@ namespace MizJam
             if (other.gameObject.tag == "Player")
             {
                 other.GetComponent<Player>().TakeDamage(damage);
-                HUDManager.instance.DisplayHitDirection(source);
+                HUDManager.instance?.DisplayHitDirection(source);
                 Destroy(this.gameObject);
             }
         }
