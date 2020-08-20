@@ -20,6 +20,9 @@ namespace MizJam
         [SerializeField]
         private LayerMask enemies;
 
+        [SerializeField]
+        private GameObject explosionEffectPrefab;
+
         private new Rigidbody rigidbody;
         private bool beeingThrown = false;
 
@@ -57,6 +60,7 @@ namespace MizJam
 
             Destroy(this);
             this.GetComponentInChildren<Renderer>().material.DOFade(0.0f, "_BaseColor", 1.0f);
+            Instantiate(this.explosionEffectPrefab, this.transform.position, this.transform.rotation);
         }
 
         private void OnCollisionEnter(Collision collision)
