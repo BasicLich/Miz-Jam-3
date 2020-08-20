@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using UnityEngine.AI;
 
 namespace MizJam
 {
@@ -14,16 +15,20 @@ namespace MizJam
         [SerializeField]
         private float shootInterval = 3f;
         private float countdown = 0f;
+        [SerializeField]
+        private float runRange = 10f;
 
         private bool isDead = false;
 
         private Rigidbody rb;
         private Animator animator;
+        private NavMeshAgent navMeshAgent;
 
         private void Start()
         {
             rb = GetComponent<Rigidbody>();
             animator = GetComponent<Animator>();
+            navMeshAgent = GetComponent<NavMeshAgent>();
         }
 
         void Update()
@@ -34,9 +39,21 @@ namespace MizJam
                 if (countdown >= shootInterval)
                 {
                     animator.SetTrigger("ShootAtPlayer");
-                    //ThrowProjectileAtPlayer();
                     countdown = 0;
                 }
+
+                KeepDistanceFromPlayer();
+            }
+        }
+
+        private void KeepDistanceFromPlayer()
+        {
+            Vector3 playerPos = new Vector3(Camera.main.transform.position.x, transform.position.y, Camera.main.transform.position.z);
+            if ((playerPos - transform.position).magnitude < runRange)
+            {
+                Vector3 dir = (transform.position - Camera.main.transform.position).normalized;
+                dir.y = transform.position.y;
+                navMeshAgent.destination = transform.position + dir;
             }
         }
 
