@@ -66,16 +66,12 @@ namespace MizJam
             navMeshAgent.enabled = false;
             rb.useGravity = true;
 
-            //Vector3 playerFeet = new Vector3(player.transform.position.x, 0, player.transform.position.z);
-            rb.AddExplosionForce(800f, transform.position + transform.forward, 5f, 0.5f, ForceMode.Force);
-
-            //destroy body
-            Destroy(transform.Find("Body").gameObject);
-
             //Explode FX
             Instantiate(explosionPrefab).transform.position = transform.position;
 
-            //deformations to animate death
+            //Death animations
+            Destroy(transform.Find("Body").gameObject);
+            rb.AddExplosionForce(800f, transform.position + transform.forward, 5f, 0.5f, ForceMode.Force);
             transform.DOScaleY(-0.8f, 0.3f).OnComplete(() => {
                 transform.DOShakeScale(2, new Vector3(0.5f, 0.5f, 0), 10, 50, true).OnComplete(() =>
                 {
