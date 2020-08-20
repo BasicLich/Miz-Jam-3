@@ -20,11 +20,14 @@ namespace MizJam
 
         void Update()
         {
-            var dirVector = enemy.transform.position - Camera.main.transform.parent.position;
-            dirVector.y = 0;
-            var rot = Quaternion.FromToRotation(Camera.main.transform.parent.forward, dirVector);
-            float angle = rot.eulerAngles.y;
-            indicatorImage.transform.parent.eulerAngles = new Vector3(0, 0, -angle);
+            if (this.enemy)
+            {
+                var dirVector = enemy.transform.position - Camera.main.transform.parent.position;
+                dirVector.y = 0;
+                var rot = Quaternion.FromToRotation(Camera.main.transform.parent.forward, dirVector);
+                float angle = rot.eulerAngles.y;
+                indicatorImage.transform.parent.eulerAngles = new Vector3(0, 0, -angle);
+            }
         }
 
         public void SetDamageSource(Enemy enemy)

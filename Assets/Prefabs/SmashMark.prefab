@@ -27,7 +27,7 @@ Transform:
   m_GameObject: {fileID: 6176942020593180958}
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 5, y: 5, z: 5}
+  m_LocalScale: {x: 10, y: 10, z: 10}
   m_Children: []
   m_Father: {fileID: 7485204699793179610}
   m_RootOrder: 1
@@ -196,6 +196,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Shockwave
+      objectReference: {fileID: 0}
+    - target: {fileID: 8371097388127421690, guid: 35e284b3f67bbc446aa424dddf4faf2d,
+        type: 3}
+      propertyPath: ShapeModule.radius.value
+      value: 5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 35e284b3f67bbc446aa424dddf4faf2d, type: 3}
