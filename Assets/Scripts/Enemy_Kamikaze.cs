@@ -17,7 +17,7 @@ namespace MizJam
         private Rigidbody rb;
 
         [SerializeField]
-        private float explosionRadius = 2f, explosionDamage = 10f;
+        private float explosionRadius = 2f, explosionDamage = 10f, seeRange = 20f;
         [SerializeField]
         private LayerMask explodeOn;
         [SerializeField]
@@ -41,7 +41,8 @@ namespace MizJam
                 if (SeesPlayer())
                 {
                     isChasingPlayer = true;
-                    Debug.Log("Eita Porra, vi hein!");
+                    animator.speed = 3;
+                    BalloonsManager.Instance.SpawnBalloonAt(BalloonEmotionsEnum.ALERT, transform);
                 }
             }
             else
@@ -55,6 +56,8 @@ namespace MizJam
         {
             Gizmos.color = Color.red;
             Gizmos.DrawWireSphere(transform.position, explosionRadius);
+            Gizmos.color = Color.yellow;
+            Gizmos.DrawWireSphere(transform.position, seeRange);
         }
 
         private void Explode(Player player)
@@ -92,6 +95,9 @@ namespace MizJam
 
         private bool SeesPlayer()
         {
+            if ((Camera.main.transform.position - transform.position).magnitude > seeRange)
+                return false;
+
             RaycastHit raycastHit;
             Physics.Linecast(transform.position, Camera.main.transform.position, out raycastHit);
             return (raycastHit.transform.root.tag == "Player");
