@@ -118,6 +118,8 @@ namespace MizJam
 
         private IEnumerator AttackCoroutine()
         {
+            this.SendMessage("OnAttackBegin");
+
             this.isAttacking = true;
 
             float t = 0;
@@ -168,6 +170,8 @@ namespace MizJam
             }
 
             this.isAttacking = false;
+
+            this.SendMessage("OnAttackEnd");
         }
 
         private Vector3 GetAttackPosition()
@@ -256,11 +260,24 @@ namespace MizJam
             };
         }
 
+        private void OnGrab()
+        {
+            this.isAttacking = true;
+        }
+
+        private void OnThrow()
+        {
+            this.isAttacking = false;
+        }
+
 #if UNITY_EDITOR
         private void OnDrawGizmosSelected()
         {
             Gizmos.color = Color.yellow;
             Gizmos.DrawWireSphere(this.camera.transform.position, this.attackRange);
+
+            Gizmos.color = Color.cyan;
+            Gizmos.DrawWireSphere(Vector3.Lerp(this.rightHand.position, this.leftHand.position, 0.5f), this.attackRadius);
         }
 #endif
     }
