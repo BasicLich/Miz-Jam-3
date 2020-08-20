@@ -21,6 +21,7 @@ public class Enemy_Kamikaze : MonoBehaviour
             if (SeesPlayer())
             {
                 isChasingPlayer = true;
+                StartChase();
                 Debug.Log("Eita Porra, vi hein!");
                 //start chase
             }
