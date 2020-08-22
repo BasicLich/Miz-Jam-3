@@ -6,13 +6,14 @@ using UnityEngine.AI;
 public class Idle_Boss : StateMachineBehaviour
 {
     public float runRange;
+    public float attackChance;
     private Vector3 playerFloor;
     private NavMeshAgent navMeshAgent;
 
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        
+         
     }
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
@@ -26,6 +27,12 @@ public class Idle_Boss : StateMachineBehaviour
             Vector3 dir = (animator.transform.position - Camera.main.transform.position).normalized;
             dir.y = animator.transform.position.y;
             navMeshAgent.destination = animator.transform.position + dir;
+        }
+
+        float rand = Random.value;
+        if(rand < attackChance)
+        {
+            animator.SetTrigger("Attacked");
         }
     }
 
