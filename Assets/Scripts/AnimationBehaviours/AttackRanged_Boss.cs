@@ -7,19 +7,17 @@ using DG.Tweening;
 public class AttackRanged_Boss : StateMachineBehaviour
 {
     public GameObject projectilePrefab;
+    private Animator animator;
 
     //OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        //Animate before throw projectile 
-        animator.transform.DOScale(1.1f, 0).OnComplete(() =>
-        {
-            ThrowProjectileAtPlayer(animator.transform);
-            animator.SetTrigger("BackToIdle");
-        });
+        this.animator = animator;
+
+        ThrowProjectileAtPlayer(animator.transform);
     }
 
-    public void ThrowProjectileAtPlayer(Transform transform)
+    private void ThrowProjectileAtPlayer(Transform transform)
     {
         Vector3 dir = (Camera.main.transform.position - transform.position).normalized;
         GameObject projectile = Instantiate(projectilePrefab);
@@ -35,10 +33,11 @@ public class AttackRanged_Boss : StateMachineBehaviour
     //}
 
     // OnStateExit is called when a transition ends and the state machine finishes evaluating this state
-    //override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
-    //{
-    //    
-    //}
+    override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
+    {
+        if(animator.GetBool("isEnraged"))
+            ThrowProjectileAtPlayer(animator.transform);
+    }
 
     // OnStateMove is called right after Animator.OnAnimatorMove()
     //override public void OnStateMove(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
