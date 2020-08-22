@@ -1,12 +1,15 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace MizJam
 {
     public class Boss : MonoBehaviour
     {
-        
+        [SerializeField]
+        private Slider healthBar;
+
         public float health;
         private float initialHealth;
         private Animator animator;
@@ -27,6 +30,7 @@ namespace MizJam
         public void TakeDamage(float damage)
         {
             health -= damage;
+            healthBar.value = health / initialHealth;
 
             if (health < initialHealth / 2)
             {
@@ -37,6 +41,11 @@ namespace MizJam
             {
                 Die();
             }
+        }
+
+        public void SufferImpact(Vector3 impactPoint, float dmg)
+        {
+            TakeDamage(dmg);
         }
 
         private void Die()
