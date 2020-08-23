@@ -33,6 +33,7 @@ public class Idle_Boss : StateMachineBehaviour
         //KeepDistanceFromPlayer
         if ((playerFloor - animator.transform.position).magnitude < runRange)
         {
+            Debug.Log("speed: " + navMeshAgent.speed);
             Vector3 dir = (animator.transform.position - Camera.main.transform.position).normalized;
             dir.y = animator.transform.position.y;
             navMeshAgent.destination = animator.transform.position + dir;   

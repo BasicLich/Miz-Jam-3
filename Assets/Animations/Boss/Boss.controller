@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   runRange: 30
   attackChance: 0.02
-  normalSpeed: 0
-  enragedSpeed: 0
+  normalSpeed: 60
+  enragedSpeed: 90
 --- !u!1101 &-8459207215802466145
 AnimatorStateTransition:
   m_ObjectHideFlags: 1
