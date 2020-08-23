@@ -51,8 +51,7 @@ AnimatorState:
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: 7362003923644431801}
-  m_StateMachineBehaviours:
-  - {fileID: 4916601865849647099}
+  m_StateMachineBehaviours: []
   m_Position: {x: 50, y: 50, z: 0}
   m_IKOnFeet: 0
   m_WriteDefaultValues: 1
@@ -538,37 +537,6 @@ AnimatorStateTransition:
   m_InterruptionSource: 0
   m_OrderedInterruption: 1
   m_CanTransitionToSelf: 1
---- !u!114 &1138405093021911212
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d3dab6d20d52622418cd45145f418043, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  minionsPrefabs:
-  - {fileID: 2052874987369347036, guid: 563099b69a165c24a94953f073b6fbfe, type: 3}
-  - {fileID: 2165663523640511513, guid: c0165900a69c4c840b0db21b465a95df, type: 3}
-  summonFXPrefab: {fileID: 4977650686714937729, guid: 35e284b3f67bbc446aa424dddf4faf2d,
-    type: 3}
---- !u!114 &1544941717498266546
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 135805ed10e202c4dbc47dbbffb6af62, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  projectilePrefab: {fileID: 6352964154800733782, guid: 770ce966af725da41b06a2f900500c26,
-    type: 3}
 --- !u!1101 &2082950238015442796
 AnimatorStateTransition:
   m_ObjectHideFlags: 1
@@ -628,8 +596,7 @@ AnimatorState:
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: 3694260994945471744}
-  m_StateMachineBehaviours:
-  - {fileID: 1138405093021911212}
+  m_StateMachineBehaviours: []
   m_Position: {x: 50, y: 50, z: 0}
   m_IKOnFeet: 0
   m_WriteDefaultValues: 1
@@ -814,20 +781,6 @@ AnimatorState:
   m_MirrorParameter: 
   m_CycleOffsetParameter: 
   m_TimeParameter: 
---- !u!114 &4916601865849647099
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 135805ed10e202c4dbc47dbbffb6af62, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  projectilePrefab: {fileID: 6352964154800733782, guid: 770ce966af725da41b06a2f900500c26,
-    type: 3}
 --- !u!1101 &5027675040171924856
 AnimatorStateTransition:
   m_ObjectHideFlags: 3
@@ -865,8 +818,7 @@ AnimatorState:
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: -6508768675889140360}
-  m_StateMachineBehaviours:
-  - {fileID: 1544941717498266546}
+  m_StateMachineBehaviours: []
   m_Position: {x: 50, y: 50, z: 0}
   m_IKOnFeet: 0
   m_WriteDefaultValues: 1
