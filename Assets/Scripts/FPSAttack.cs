@@ -206,7 +206,7 @@ namespace MizJam
                         enemy.SufferImpact(hit.point);
 
                     Boss bossInRange = Physics.OverlapSphere(hit.point, this.attackRadius, this.enemies)?.Select(el => el.GetComponent<Boss>()).FirstOrDefault();
-                    bossInRange?.SufferImpact(this.transform.position, 10f);
+                    bossInRange?.SufferImpact(hit.point, 10f);
                 }
             }
         }

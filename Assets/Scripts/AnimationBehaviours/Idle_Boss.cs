@@ -13,7 +13,7 @@ public class Idle_Boss : StateMachineBehaviour
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-         
+        navMeshAgent = animator.transform.GetComponent<NavMeshAgent>();
     }
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
@@ -26,7 +26,7 @@ public class Idle_Boss : StateMachineBehaviour
         {
             Vector3 dir = (animator.transform.position - Camera.main.transform.position).normalized;
             dir.y = animator.transform.position.y;
-            navMeshAgent.destination = animator.transform.position + dir;
+            navMeshAgent.destination = animator.transform.position + dir;   
         }
 
         float rand = Random.value;

@@ -25,11 +25,13 @@ namespace MizJam
         public float health;
         private float initialHealth;
         private Animator animator;
+        private Rigidbody rb;
 
         // Start is called before the first frame update
         void Start()
         {
             animator = GetComponent<Animator>();
+            rb = GetComponent<Rigidbody>();
             initialHealth = health;
         }
 
@@ -57,7 +59,14 @@ namespace MizJam
 
         public void SufferImpact(Vector3 impactPoint, float dmg)
         {
+            Knockback(impactPoint);
             TakeDamage(dmg);
+        }
+
+        public void Knockback(Vector3 origin)
+        {
+            rb.AddForce((transform.position - origin).normalized * 500);
+            //rb.AddExplosionForce(1000f, origin, 5f, 2f, ForceMode.Force);
         }
 
         private void Die()
