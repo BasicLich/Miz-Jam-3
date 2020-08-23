@@ -112,9 +112,10 @@ namespace MizJam
         {
             GameObject projectilePrefab = animator.GetBool("isEnraged") ? enragedProjectilePrefab : normalProjectilePrefab;
 
-            Vector3 dir = (Camera.main.transform.position - transform.position).normalized;
+            Vector3 bowPos = transform.Find("Body").Find("Bow").position;
+            Vector3 dir = (Camera.main.transform.position - bowPos).normalized;
             GameObject projectile = Instantiate(projectilePrefab);
-            projectile.transform.position = transform.Find("Body").Find("Bow").position;
+            projectile.transform.position = bowPos;
             //projectile.GetComponent<Projectile>().SetSource(this);
             projectile.GetComponent<Rigidbody>().AddForceAtPosition(dir * 3000, Vector3.zero);
         }

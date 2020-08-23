@@ -7,6 +7,8 @@ public class Idle_Boss : StateMachineBehaviour
 {
     public float runRange;
     public float attackChance;
+    public float normalSpeed;
+    public float enragedSpeed;
     private Vector3 playerFloor;
     private NavMeshAgent navMeshAgent;
 
@@ -14,6 +16,13 @@ public class Idle_Boss : StateMachineBehaviour
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         navMeshAgent = animator.transform.GetComponent<NavMeshAgent>();
+        if (animator.GetBool("isEnraged"))
+        {
+            navMeshAgent.speed = enragedSpeed;
+        } else
+        {
+            navMeshAgent.speed = normalSpeed;
+        }
     }
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
