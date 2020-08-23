@@ -71,6 +71,7 @@ namespace MizJam
             //TODO: Death sound
             animator.enabled = false;
             isDead = true;
+            navMeshAgent.enabled = false;
             rb.useGravity = true;
             rb.AddExplosionForce(800f, point, 5f, 2f, ForceMode.Force);
 
