@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using DG.Tweening;
 
 namespace MizJam
 {
@@ -9,6 +10,14 @@ namespace MizJam
     {
         [SerializeField]
         private Slider healthBar;
+        [SerializeField]
+        private float triggerIntroDistance;
+        private bool didIntroduce;
+
+        public float health;
+        private float initialHealth;
+        private Animator animator;
+        private Rigidbody rb;
 
         [Header("RangedAttack")]
         [SerializeField]
@@ -22,14 +31,12 @@ namespace MizJam
         [SerializeField]
         private GameObject summonFXPrefab;
 
+        [Header("Mellee Attack")]
         [SerializeField]
-        private float triggerIntroDistance;
-        private bool didIntroduce;
-
-        public float health;
-        private float initialHealth;
-        private Animator animator;
-        private Rigidbody rb;
+        private float melleeRange, melleeDamage;
+        [SerializeField]
+        private LayerMask attackLayers;
+        private Vector3 chargePos;
 
         // Start is called before the first frame update
         void Start()
@@ -63,6 +70,9 @@ namespace MizJam
         {
             Gizmos.color = Color.yellow;
             Gizmos.DrawWireSphere(transform.position, triggerIntroDistance);
+
+            Gizmos.color = Color.red;
+            Gizmos.DrawWireSphere(transform.position, melleeRange);
         }
 
         public void TakeDamage(float damage)
@@ -117,6 +127,37 @@ namespace MizJam
             Vector3 summonPos = animator.transform.position + animator.transform.Find("Body").forward * 6;
             minion.transform.position = summonPos;
             Instantiate(summonFXPrefab).transform.position = summonPos;
+        }
+
+        public void GetChargePosition()
+        {
+            chargePos = Camera.main.transform.position;
+            chargePos.y = transform.position.y;
+        }
+
+        public void ChargeAtPlayer()
+        {
+            if(chargePos != Vector3.zero)
+            {
+                Vector3 finalPos = (chargePos - transform.position) * 0.9f;
+                transform.DOMove(transform.position + finalPos, 0.5f).OnComplete(() => CheckIfMelleedPlayer());
+
+                chargePos = Vector3.zero;
+            }
+        }
+
+        private void CheckIfMelleedPlayer()
+        {
+            Collider[] cols = Physics.OverlapSphere(transform.position, melleeRange, attackLayers);
+            foreach(var col in cols)
+            {
+                Player player = col.GetComponent<Player>();
+                if (player != null)
+                {
+                    player.TakeDamage(melleeDamage);
+                    break;
+                }
+            }
         }
     }
 }
