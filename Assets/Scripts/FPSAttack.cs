@@ -204,6 +204,9 @@ namespace MizJam
                     IEnumerable<Enemy> inRange = Physics.OverlapSphere(hit.point, this.attackRadius, this.enemies).Select(el => el.GetComponent<Enemy>()).Where(el => el != null);
                     foreach (Enemy enemy in inRange)
                         enemy.SufferImpact(hit.point);
+
+                    Boss bossInRange = Physics.OverlapSphere(hit.point, this.attackRadius, this.enemies)?.Select(el => el.GetComponent<Boss>()).FirstOrDefault();
+                    bossInRange?.SufferImpact(hit.point, 10f);
                 }
             }
         }
