@@ -22,6 +22,10 @@ namespace MizJam
         [SerializeField]
         private GameObject summonFXPrefab;
 
+        [SerializeField]
+        private float triggerIntroDistance;
+        private bool didIntroduce;
+
         public float health;
         private float initialHealth;
         private Animator animator;
@@ -38,7 +42,27 @@ namespace MizJam
         // Update is called once per frame
         void Update()
         {
-        
+            if (!didIntroduce)
+            {
+                if((Camera.main.transform.position - transform.position).magnitude <= triggerIntroDistance)
+                {
+                    TriggerIntro();
+                }
+            }
+        }
+
+        private void TriggerIntro()
+        {
+            didIntroduce = true;
+            healthBar.transform.parent.gameObject.SetActive(true);
+            animator.SetTrigger("IntroduceTrigger");
+            animator.SetBool("DidIntroduce", true);
+        }
+
+        private void OnDrawGizmos()
+        {
+            Gizmos.color = Color.yellow;
+            Gizmos.DrawWireSphere(transform.position, triggerIntroDistance);
         }
 
         public void TakeDamage(float damage)
