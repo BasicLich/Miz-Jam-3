@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 7251887339248781849}
   - component: {fileID: 7251887339248781848}
   - component: {fileID: 7251887339248781855}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: KingArena
   m_TagString: Untagged
   m_Icon: {fileID: 0}

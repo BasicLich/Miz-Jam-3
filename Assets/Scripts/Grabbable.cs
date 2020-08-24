@@ -54,12 +54,9 @@ namespace MizJam
 
         private void Explode()
         {
-            IEnumerable<Enemy> inRange = Physics.OverlapSphere(this.transform.position, this.explosionRadius, this.enemies).Select(el => el.GetComponent<Enemy>()).Where(el => el != null);
+            IEnumerable<IImpactable> inRange = Physics.OverlapSphere(this.transform.position, this.explosionRadius, this.enemies).Select(el => el.GetComponent<IImpactable>()).Where(el => el != null);
             foreach (Enemy enemy in inRange)
                 enemy.SufferImpact(this.transform.position);
-
-            Boss bossInRange = Physics.OverlapSphere(this.transform.position, this.explosionRadius, this.enemies)?.Select(el => el.GetComponent<Boss>()).FirstOrDefault();
-            bossInRange?.SufferImpact(this.transform.position, 10f);
 
             Destroy(this);
             this.GetComponentInChildren<Renderer>().material.DOFade(0.0f, "_BaseColor", 1.0f);
@@ -70,11 +67,8 @@ namespace MizJam
         {
             if (this.beeingThrown)
             {
-                Enemy enemy = collision.gameObject.GetComponentInParent<Enemy>();
+                IImpactable enemy = collision.gameObject.GetComponentInParent<IImpactable>();
                 enemy?.SufferImpact(this.transform.position);
-
-                Boss boss = collision.gameObject.GetComponentInParent<Boss>();
-                boss?.SufferImpact(this.transform.position, 10f);
             }
 
             if (collision.relativeVelocity.magnitude > this.maxImpactVelocity)

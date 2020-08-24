@@ -865,7 +865,7 @@ MonoBehaviour:
   summonFXPrefab: {fileID: 7417349758264579924, guid: f2253b45169fc7a4faafb2c97ce34289,
     type: 3}
   melleeRange: 12
-  melleeDamage: 0
+  melleeDamage: 15
   attackLayers:
     serializedVersion: 2
     m_Bits: 256
