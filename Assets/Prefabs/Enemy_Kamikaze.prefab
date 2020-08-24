@@ -99,7 +99,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   explosionRadius: 4
-  explosionDamage: 10
+  explosionDamage: 30
   seeRange: 40
   explodeOn:
     serializedVersion: 2

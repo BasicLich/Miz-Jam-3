@@ -6,7 +6,7 @@ using DG.Tweening;
 
 namespace MizJam
 {
-    public class Boss : MonoBehaviour
+    public class Boss : MonoBehaviour, IImpactable
     {
         [SerializeField]
         private Slider healthBar;
@@ -60,6 +60,7 @@ namespace MizJam
 
         private void TriggerIntro()
         {
+            Player.Instance.Heal();
             didIntroduce = true;
             healthBar.transform.parent.gameObject.SetActive(true);
             animator.SetTrigger("IntroduceTrigger");
@@ -91,10 +92,10 @@ namespace MizJam
             }
         }
 
-        public void SufferImpact(Vector3 impactPoint, float dmg)
+        public void SufferImpact(Vector3 impactPoint)
         {
             Knockback(impactPoint);
-            TakeDamage(dmg);
+            TakeDamage(10.0f);
         }
 
         public void Knockback(Vector3 origin)
@@ -106,6 +107,7 @@ namespace MizJam
         private void Die()
         {
             animator.SetTrigger("DidDie");
+            HUDManager.Instance.EndGame(true);
         }
 
         public void ThrowProjectileAtPlayer()

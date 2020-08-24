@@ -201,12 +201,9 @@ namespace MizJam
                     mark.transform.up = hit.normal;
                     mark.transform.Rotate(0.0f, Random.Range(0, 90.0f), 0.0f, Space.Self);
 
-                    IEnumerable<Enemy> inRange = Physics.OverlapSphere(hit.point, this.attackRadius, this.enemies).Select(el => el.GetComponent<Enemy>()).Where(el => el != null);
-                    foreach (Enemy enemy in inRange)
+                    IEnumerable<IImpactable> inRange = Physics.OverlapSphere(hit.point, this.attackRadius, this.enemies).Select(el => el.GetComponent<IImpactable>()).Where(el => el != null);
+                    foreach (IImpactable enemy in inRange)
                         enemy.SufferImpact(hit.point);
-
-                    Boss bossInRange = Physics.OverlapSphere(hit.point, this.attackRadius, this.enemies)?.Select(el => el.GetComponent<Boss>()).FirstOrDefault();
-                    bossInRange?.SufferImpact(hit.point, 10f);
                 }
             }
         }

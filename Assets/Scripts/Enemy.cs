@@ -7,7 +7,7 @@ using UnityEngine.AI;
 
 namespace MizJam
 {
-    public class Enemy : MonoBehaviour
+    public class Enemy : MonoBehaviour, IImpactable
     {
         [SerializeField]
         private GameObject projectilePrefab;
@@ -36,7 +36,7 @@ namespace MizJam
             if (!isDead)
             {
                 countdown += Time.fixedDeltaTime;
-                if (countdown >= shootInterval)
+                if (countdown >= shootInterval && this.IsInRange())
                 {
                     animator.SetTrigger("ShootAtPlayer");
                     countdown = 0;
@@ -44,6 +44,11 @@ namespace MizJam
 
                 KeepDistanceFromPlayer();
             }
+        }
+
+        private bool IsInRange()
+        {
+            return (transform.position - Player.Instance.transform.position).magnitude <= 50.0f;
         }
 
         private void KeepDistanceFromPlayer()

@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8882454255437049203}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: HouseMedium
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -44,7 +44,7 @@ GameObject:
   - component: {fileID: 6121354659515099951}
   - component: {fileID: 533934870625873459}
   - component: {fileID: 6320996598713050145}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Mesh
   m_TagString: Untagged
   m_Icon: {fileID: 0}

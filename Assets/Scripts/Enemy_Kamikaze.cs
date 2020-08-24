@@ -1,14 +1,11 @@
 ﻿using DG.Tweening;
-using MizJam;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
 namespace MizJam
 {
     [RequireComponent(typeof(Animator))]
-    public class Enemy_Kamikaze : MonoBehaviour
+    public class Enemy_Kamikaze : MonoBehaviour, IImpactable
     {
         private Animator animator;
         private bool isChasingPlayer;
@@ -62,7 +59,8 @@ namespace MizJam
 
         private void Explode(Player player)
         {
-            player.TakeDamage(explosionDamage);
+            if ((Player.Instance.transform.position - this.transform.position).magnitude <= this.explosionRadius)
+                player.TakeDamage(explosionDamage);
 
             isExploding = true;
             animator.enabled = false;
@@ -73,7 +71,7 @@ namespace MizJam
             Instantiate(explosionPrefab).transform.position = transform.position;
 
             //Death animations
-            Destroy(transform.Find("Body").gameObject);
+            Destroy(transform.Find("Body")?.gameObject);
             rb.AddExplosionForce(800f, transform.position + transform.forward, 5f, 0.5f, ForceMode.Force);
             transform.DOScaleY(-0.8f, 0.3f).OnComplete(() => {
                 transform.DOShakeScale(2, new Vector3(0.5f, 0.5f, 0), 10, 50, true).OnComplete(() =>
@@ -107,6 +105,11 @@ namespace MizJam
         {
             Vector3 target = new Vector3(Camera.main.transform.position.x, transform.position.y, Camera.main.transform.position.z);
             navMeshAgent.SetDestination(target);
+        }
+
+        public void SufferImpact(Vector3 position)
+        {
+            this.Explode(Player.Instance);
         }
     }
 }

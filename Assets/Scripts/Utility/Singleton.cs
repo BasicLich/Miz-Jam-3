@@ -21,13 +21,6 @@ namespace MizJam.Utility
         {
             get
             {
-                if (m_ShuttingDown)
-                {
-                    Debug.LogWarning("[Singleton] Instance '" + typeof(T) +
-                        "' already destroyed. Returning null.");
-                    return null;
-                }
-
                 lock (m_Lock)
                 {
                     if (m_Instance == null)
@@ -53,14 +46,7 @@ namespace MizJam.Utility
             }
         }
 
-
         private void OnApplicationQuit()
-        {
-            m_ShuttingDown = true;
-        }
-
-
-        private void OnDestroy()
         {
             m_ShuttingDown = true;
         }
